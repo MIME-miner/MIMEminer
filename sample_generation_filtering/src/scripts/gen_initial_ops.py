@@ -10,7 +10,7 @@ ops = [
 with open("../../grammar/email_grammar.json", "r") as fp_grammar:
     grammar = json.load(fp_grammar)
 
-black_list = ["entity-root"]
+black_list = ["entity-root", "<start>"]
 
 for node in grammar:
     if node in black_list:

@@ -7,7 +7,7 @@ from random import randint
 from copy import deepcopy
 from os import path
 from subprocess import Popen
-from diff_detect import att_diff
+from diff_detect import att_output_cmp
 from targets_config import fuzz_targets
 import json
 import random
@@ -16,13 +16,14 @@ import random
 def fuzzOneInput(sample,fuzz_targets):
     # for target in fuzz_targets:
     #     target(sample)
-    open(config.out_file, "w").write(sample)
+    open(config.out_file, "wb").write(sample)
 
-    for target in fuzz_targets:
+    for target_name in fuzz_targets:
+        target = fuzz_targets[target_name]
         p = Popen(target["execute_str"].format(input_path = config.out_file,output_path = path.join(config.output_dir, target["name"])),cwd=target["cwd"],shell=True)
         p.wait()
 
-    diff = att_diff(config.extract_dest_path)
+    diff = att_output_cmp(config.extract_dest_path)
 
     return diff
 
@@ -71,13 +72,13 @@ def main():
 
         op_id = random_op_with_weights(mutations_operators)
 
-        selector = mutations_operators[op_id[0]]
-        operator = op_id[1]
+        selector = mutations_operators[op_id][0]
+        operator = mutations_operators[op_id][1]
 
-        mutator = Mutator(grammar=sample.grammar, verbose=True, _input=sample)
-        mutated_input:InputTree = mutator.mutate_input(sample, selector , operator)
+        mutator = Mutator(verbose=True, _input=sample)
+        mutated_input:InputTree = mutator.mutate_input(selector, operator)
 
-        data = mutated_input.tree_to_msg(mutated_input)
+        data = mutated_input.tree_to_msg()
 
         ok = fuzzOneInput(data,fuzz_targets)
 
@@ -85,7 +86,7 @@ def main():
             mutations_operators[op_id][3] += reward_rate
             save_file(config.filtered_result_path,sample)
         else:
-            key = op_id[0]+op_id[1]
+            key = selector + operator
             if op_scoreboard.get(key) is None:
                 op_scoreboard[key] = 1
             else:

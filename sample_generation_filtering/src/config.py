@@ -6,6 +6,8 @@ mutation_info_path = "../grammar/symbol_mutation_info.json"
 out_file = "1.txt"
 seed_file = "seed.txt"
 
+output_dir = "../out/extracted_att/"
+
 sample_dir = "../out/sample/"
 origin_dir = "../out/sample/origin/"
 mutated_dir = "../out/sample/mutated/"

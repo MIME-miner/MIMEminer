@@ -28,8 +28,10 @@ class Mutator:
 
             self.__getattribute__(operator)(node_to_mutate, self.verbose)
 
+            return self.input
+
         except Exception as exception:
-            _print_exception()
+            _print_exception("")
             raise exception
 
     def remove_random_character(self, node, verbose=False):
