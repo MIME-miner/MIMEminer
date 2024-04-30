@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "hjMjTA7tWV1ERvvQBb5mTicfPBDwOGH7g3MJLODqtvh5m4h7o8FL5aZqthw4gvNsXp2Oadk+i5AJWRBnlvdIoQ==",
+  "success": true,
+  "projectFilePath": "/Users/eki/projects/mimeminer/csharp/mimekit-parser/mimekit-parser.csproj",
+  "expectedPackageFiles": [
+    "/Users/eki/.nuget/packages/bouncycastle.cryptography/2.3.0/bouncycastle.cryptography.2.3.0.nupkg.sha512",
+    "/Users/eki/.nuget/packages/mimekit/4.5.0/mimekit.4.5.0.nupkg.sha512",
+    "/Users/eki/.nuget/packages/system.formats.asn1/8.0.0/system.formats.asn1.8.0.0.nupkg.sha512",
+    "/Users/eki/.nuget/packages/system.security.cryptography.pkcs/8.0.0/system.security.cryptography.pkcs.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

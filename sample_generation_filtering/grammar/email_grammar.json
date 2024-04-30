@@ -1,0 +1,202 @@
+{
+  "entity-root": [
+    "<mail-message>",
+    "<body-part>"
+  ],
+  "encoding_content_map": {
+    "7bit": "<ascii_body>",
+    "8bit": "<ascii_body>",
+    "binary": "<ascii_body>",
+    "base64": "<base_64_body>",
+    "quoted-printable": "<quoted-printable_body>"
+  },
+
+
+  "<start>": [
+    "<mail-message>"
+  ],
+  "<mail-message>": [
+    "<mail-header><CRLF><mail-body>"
+  ],
+  "<mail-header>": [
+    "<From-header_CRLF><To-header_CRLF><Date-header_CRLF><Subject-header_CRLF><MIME-message-headers>"
+  ],
+  "<From-header_CRLF>": [
+    "From: <sender@a.com>\r\n"
+  ],
+  "<To-header_CRLF>": [
+    "To: <receiver@b.com>\r\n"
+  ],
+  "<Date-header_CRLF>": [
+    "Date: Mon, 1 Jan 2024 10:10:10 +0000\r\n"
+  ],
+  "<Subject-header_CRLF>": [
+    "Subject: MIME Parsing Ambiguity Test\r\n"
+  ],
+  "<MIME-message-headers>": [
+    "<version_CRLF><entity-headers>"
+  ],
+  "<version_CRLF>": [
+    "MIME-Version: 1.0\r\n"
+  ],
+  "<entity-headers>": [
+    "<content_CRLF><encoding_CRLF><id_CRLF><disposition_CRLF>",
+    "<content_CRLF><id_CRLF><disposition_CRLF>"
+  ],
+  "<content_CRLF>": [
+    "<c-type><colon><space><C_type_subtype><parameter><CRLF>"
+  ],
+  "<c-type>": [
+    "Content-Type"
+  ],
+  "<C_type_subtype>": [
+    "<text>",
+    "<multipart>",
+    "<app>"
+  ],
+  "<text>": [
+    "text/plain"
+  ],
+  "<multipart>": [
+    "multipart/mixed"
+  ],
+  "<app>": [
+    "app/octet-stream",
+    "app/zip"
+  ],
+  "<encoding_CRLF>": [
+    "<c-encoding><colon><space><CTE><CRLF>"
+  ],
+  "<c-encoding>": [
+    "Content-Transfer-Encoding"
+  ],
+  "<CTE>": [
+    "base64",
+    "quoted-printable"
+  ],
+  "<id_CRLF>": [
+    "<c-id><colon><space><id_str><CRLF>"
+  ],
+  "<c-id>": [
+    "Content-ID"
+  ],
+  "<id_str>": [
+    ""
+  ],
+  "<disposition_CRLF>": [
+    "<c-disposition><colon><space><disp><parameter><CRLF>"
+  ],
+  "<c-disposition>": [
+    "Content-Disposition"
+  ],
+  "<disp>": [
+    "attachment"
+  ],
+  "<parameter>": [
+    ""
+  ],
+  "<mail-body>": [
+    "<entity-body>"
+  ],
+  "<entity-body>": [
+    "<individual_body>",
+    "<multipart_body>"
+  ],
+  "<individual_body>": [
+    "<ascii_body>",
+    "<base_64_body>",
+    "<quoted-printable_body>"
+  ],
+  "<ascii_body>": [
+    "Hi, this is a test message! Best wishes.\r\nASCII content for test\r\n"
+  ],
+  "<base_64_body>": [
+    "WrIS53c9UC/DSCpYJPQ0P4WTMPrK+WAacWt5K1CCNo8="
+  ],
+  "<quoted-printable_body>": [
+    "Z=B2=12=E7w=3DP/=C3H*X$=F44?=85=930=FA=CA=F9=60=1Aqky+P=826=8F"
+  ],
+  "<multipart_body>": [
+    "<preamble><CRLF><multipart_begin_dash-boundary><CRLF><body-part><encapsulation><close-delimiter>",
+    "<multipart_begin_dash-boundary><CRLF><body-part><encapsulation><close-delimiter><CRLF><epilogue>",
+    "<multipart_begin_dash-boundary><CRLF><body-part><encapsulation><close-delimiter>",
+    "<preamble><CRLF><multipart_begin_dash-boundary><CRLF><body-part><encapsulation><close-delimiter><CRLF><epilogue>"
+  ],
+  "<multipart_begin_dash-boundary>": [
+    "<dash-boundary>"
+  ],
+  "<encapsulation>": [
+    "<delimiter><CRLF><body-part>"
+  ],
+  "<dash-boundary>": [
+    "<dash><boundary>"
+  ],
+  "<delimiter>": [
+    "<CRLF><dash-boundary>"
+  ],
+  "<close-delimiter>": [
+    "<delimiter><multipart_end_dash>"
+  ],
+  "<boundary>": [
+    ""
+  ],
+  "<multipart_end_dash>": [
+    "<dash>"
+  ],
+  "<dash>": [
+    "--"
+  ],
+  "<body-part>": [
+    "<entity-headers><CRLF><entity-body>"
+  ],
+  "<preamble>": [
+    "This is preamble text."
+  ],
+  "<epilogue>": [
+    "This is epilogue text."
+  ],
+  "<MIME-part-headers>": [
+    "<entity-headers>"
+  ],
+  "<comment>": [
+    "<left_parenthesis><ctext><quoted-pair><comment><encoded-word><right_parenthesis>"
+  ],
+  "<phrase>": [
+    "<encoded-word>",
+    "<word>"
+  ],
+  "<encoded-word>": [
+    "<equal><question_mark><charset><question_mark><encoding><question_mark><encoded-text><question_mark><equal>"
+  ],
+  "<charset>": [
+    "<token>"
+  ],
+  "<encoding>": [
+    "Q",
+    "B"
+  ],
+  "<token>": [
+    "Any CHAR except SPACE, CTLs, and especials"
+  ],
+  "<encoded-text>": [
+    "Any printable ASCII character other than \"?\" or SPACE"
+  ],
+  "<CRLF>": [
+    "\r\n"
+  ],
+  "<colon>": [
+    ":"
+  ],
+  "<space>": [
+    " "
+  ],
+  "<semicolon>": [
+    ";"
+  ],
+  "<equal>": [
+    "="
+  ],
+  "<question_mark>": [
+    "?"
+  ]
+}

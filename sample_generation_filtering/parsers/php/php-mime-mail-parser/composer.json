@@ -1,0 +1,17 @@
+{
+    "name": "eki/mimeminer",
+    "type": "common",
+    "autoload": {
+        "psr-4": {
+            "Eki\\Mimeminer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "eki"
+        }
+    ],
+    "require": {
+        "php-mime-mail-parser/php-mime-mail-parser": "^1.0"
+    }
+}

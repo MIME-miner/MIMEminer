@@ -1,0 +1,2 @@
+[18] Removing character '-' at pos 7 of <c-type>.
+

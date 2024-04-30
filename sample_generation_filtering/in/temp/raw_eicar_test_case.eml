@@ -1,0 +1,28 @@
+Received: from vps3.hostoftroubles.com (unknown [140.82.51.134])
+	by mx78 (Coremail) with SMTP id MN1pCgDHs71LM85iVzTfDw--.61952S2;
+	Wed, 13 Jul 2022 10:51:57 +0800 (CST)
+From: <echo@vps3.hostoftroubles.com>
+To: <maxwellkang@163.com>
+Date: Wed, 13 Jul 2022 02:51:44 +0000
+MIME-Version: 1.0
+Subject: raw eicar b64 test case
+Content-Type: multipart/mixed; boundary=foo
+X-CM-TRANSID:MN1pCgDHs71LM85iVzTfDw--.61952S2
+Message-Id:<62CE334E.4C2035.11707@mail-m9743.mail.163.com>
+Authentication-Results: mx78; spf=pass smtp.mail=echo@vps3.hostoftroub
+	les.com;
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsF19UUUUU
+
+--foo
+Content-type: text/plain
+
+Email with an attachment.
+This is the main body text part.
+--foo
+Content-type: text/plain;name=b64_eicar_4
+Content-Disposition: attachment; filename=b64_eicar3
+
+X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
+X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
+--foo--

@@ -1,0 +1,72 @@
+{
+  "<mail-message>": 0,
+  "<mail-header>": 0,
+  "<From-header_CRLF>": 1,
+  "<To-header_CRLF>": 1,
+  "<Date-header_CRLF>": 1,
+  "<Subject-header_CRLF>": 1,
+
+  "<MIME-message-headers>": 0,
+  "<version_CRLF>": 1,
+  "<entity-headers>": 0,
+  "<content_CRLF>": 0,
+  "<c-type>": 1,
+  "<C_type_subtype>": 0,
+  "<text>": 1,
+  "<multipart>": 1,
+  "<app>": 1,
+  "<encoding_CRLF>": 0,
+  "<c-encoding>": 1,
+  "<CTE>": 1,
+  "<id_CRLF>": 1,
+  "<disposition_CRLF>": 0,
+  "<c-disposition>": 1,
+  "<disp>": 1,
+
+  "<parameter>": 0,
+
+  "<mail-body>": 0,
+  "<entity-body>": 0,
+
+  "<individual_body>": 0,
+  "<text_body>": 1,
+  "<base_64_body>": 1,
+  "<quoted-printable_body>": 1,
+
+  "<multipart_body>": 0,
+  "<multipart_begin_dash-boundary>": 0,
+  "<encapsulation>": 0,
+  "<dash-boundary>": 0,
+  "<delimiter>": 0,
+  "<close-delimiter>": 0,
+  "<boundary>": 1,
+  "<multipart_end_dash>": 0,
+  "<dash>": 1,
+
+  "<body-part>": 0,
+
+
+  "<preamble>": 1,
+  "<epilogue>": 1,
+
+
+  "<MIME-part-headers>": 0,
+
+
+  "<comment>": 0,
+  "<phrase>": 0,
+  "<encoded-word>": 0,
+  "<charset>": 0,
+  "<encoding>": 1,
+  "<token>": 1,
+  "<encoded-text>": 1,
+
+
+
+  "<CRLF>": 1,
+  "<colon>": 1,
+  "<space>": 1,
+  "<semicolon>": 1,
+  "<equal>": 1,
+  "<question_mark>": 1
+}
