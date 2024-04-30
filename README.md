@@ -4,9 +4,7 @@ A tool to discover email malware detection evasion vulnerabilities based on pars
 
 ## Sample Generation and Filtering
 
-### Usage
-
-
+* See content in sample_generation/filtering directory
 
 ## Bypass Test
 
