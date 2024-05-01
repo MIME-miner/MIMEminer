@@ -5,6 +5,9 @@ A tool to discover email malware detection evasion vulnerabilities based on pars
 ## Sample Generation and Filtering
 
 * See content in sample_generation/filtering directory
+* Add parsers for Sample Filtering in `sample_generation_filtering/parsers`.
+* Set grammar for Sample Generation in `sample_generation_filtering/grammar`.
+* Run `sample_generation_filtering/src/main.py` to generate test samples.
 
 ## Bypass Test
 

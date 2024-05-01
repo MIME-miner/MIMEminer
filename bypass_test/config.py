@@ -13,10 +13,6 @@ sender = {
         "helo": b"sender.a.com",
         "mf": b"<sender@a.com>",
     },
-    "vps3": {
-        "helo": b"vps3.hostoftroubles.com",
-        "mf": b"<echo@vps3.hostoftroubles.com>",
-    },
 }
 
 target_mailbox = {
@@ -24,10 +20,9 @@ target_mailbox = {
         "mx": "mx1.b.com",
         "receiver": b"<receiver@b.com>",
     },
-    "qq_mail": {
-        "mx": "mx2.qq.com",
-        "receiver": b"<1379664023@qq.com>",
-        # "receiver": b"<echozhang258@qq.com>",
+    "gmail": {
+        "mx": "gmail-smtp-in.l.google.com",
+        "receiver": b"<receiver_example@gmail.com>",
     },
 }
 
