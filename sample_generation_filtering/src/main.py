@@ -7,30 +7,30 @@ from random import randint
 from copy import deepcopy
 from os import path
 from subprocess import Popen
-from diff_detect import att_output_cmp
+from diff_detect import valid_diff_among_parsers
 from targets_config import fuzz_targets
 import json
 import random
 
 
-def fuzzOneInput(sample,fuzz_targets):
+def fuzzOneInput(sample, fuzz_targets):
     # for target in fuzz_targets:
     #     target(sample)
     open(config.out_file, "wb").write(sample)
 
     for target_name in fuzz_targets:
         target = fuzz_targets[target_name]
-        p = Popen(target["execute_str"].format(input_path = config.out_file,output_path = path.join(config.output_dir, target["name"])),cwd=target["cwd"],shell=True)
+        p = Popen(target["execute_str"].format(input_path=config.out_file, output_path=path.join(config.output_dir, target["name"])), cwd=target["cwd"], shell=True)
         p.wait()
 
-    diff = att_output_cmp(config.extract_dest_path)
-
+    diff = valid_diff_among_parsers(config.extract_dest_path)
     return diff
 
 
 def load_mutations_operators(path):
     with open(path, "r") as fp:
         return json.load(fp)
+
 
 def generate_input(seed,count):
     sample_generator = Generator(True, [], config.out_file, config.seed_file)
@@ -41,14 +41,15 @@ def generate_input(seed,count):
     pass
 
 
-def save_file(path,sample):
-    with open(path,"w") as fp:
+def save_file(path, sample):
+    with open(path, "w") as fp:
         fp.write(sample.tree_to_msg(sample))
+
 
 def random_op_with_weights(possible_ops):
     probabilities = [0] * len(possible_ops)
-    op_ids= range(len(possible_ops))
-    for index,(selector,operator,priority) in enumerate(possible_ops):
+    op_ids = range(len(possible_ops))
+    for index, (selector, operator, priority) in enumerate(possible_ops):
         probabilities[index] = float(priority)
 
     probabilities = [(1 - sum(probabilities)) / probabilities.count(0) if elem == 0 else elem for elem in probabilities]
@@ -56,6 +57,7 @@ def random_op_with_weights(possible_ops):
     op_id = random.choices(op_ids, weights=probabilities)[0]
 
     return op_id
+
 
 def main():
     # seed_l, seed_r = 0, 20
@@ -67,9 +69,7 @@ def main():
     punishment_rate = 0.1
     op_scoreboard = {}
 
-
-    for sample in generate_input(seed,TOTAL):
-
+    for sample in generate_input(seed, TOTAL):
         op_id = random_op_with_weights(mutations_operators)
 
         selector = mutations_operators[op_id][0]
@@ -80,11 +80,11 @@ def main():
 
         data = mutated_input.tree_to_msg()
 
-        ok = fuzzOneInput(data,fuzz_targets)
+        ok = fuzzOneInput(data, fuzz_targets)
 
         if ok:
             mutations_operators[op_id][3] += reward_rate
-            save_file(config.filtered_result_path,sample)
+            save_file(config.filtered_result_path, sample)
         else:
             key = selector + operator
             if op_scoreboard.get(key) is None:
@@ -94,7 +94,8 @@ def main():
             if op_scoreboard[key] > PUNISH_THRESHOLD:
                 mutations_operators[op_id][3] -= punishment_rate
 
-    json.dump(op_scoreboard,open(config.mutations_ops_path,"w"),indent=2)
+    json.dump(op_scoreboard, open(config.mutations_ops_path, "w"), indent=2)
+
 
 if __name__ == "__main__":
     main()

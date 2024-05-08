@@ -3,6 +3,7 @@ import os
 import re
 import filecmp
 import config as cfg
+from targets_config import fuzz_targets
 
 # 差异类型：0parser输出目录缺失 1文件数量不同 2文件名不同 3文件内容不同
 parser_diff = {}
@@ -61,12 +62,12 @@ def two_parser_cmp(parser1, parser2, att_path):
     file_set1 = set(file_dict1.keys())
     file_set2 = set(file_dict2.keys())
 
-    # 附件数量是否相同
+    # check whether the number of attachments is the same
     # if len(file_set1) != len(file_set2):
     #     diff_detected(eml_name, "Attachment number unmatched between parser {} and {}.".format(parser1, parser2))
     #     same_flag = False
 
-    # 有哪几个文件不同时存在于两个目录中
+    # which files do not exist in both directories at the same time
     common_file = file_set1.intersection(file_set2)
     not_in_set2 = file_set1.difference(file_set2)
     not_in_set1 = file_set2.difference(file_set1)
@@ -79,7 +80,7 @@ def two_parser_cmp(parser1, parser2, att_path):
                       "{} from {} not exist in output from {}.".format(not_in_set1, parser2, parser1))
         same_flag = False
 
-    # 对比文件内容 只对文件名相同的文件集合进行比较
+    # compare file contents (only for files with the same file name)
     # match, mismatch, error = filecmp.cmpfiles(path1, path2, common=common_file)
     mismatch = []
     for cf in common_file:
@@ -95,18 +96,43 @@ def two_parser_cmp(parser1, parser2, att_path):
     return same_flag
 
 
+def valid_diff_among_parsers(att_path):
+    non_empty_flag = False   # set as True if at least one parser extracted non-empty attachment
+    for parser in fuzz_targets:
+        extracted_att_list = os.listdir(os.path.join(att_path, parser))
+        for att in extracted_att_list:
+            if os.path.getsize(os.path.join(att_path, parser, att)) != 0:
+                non_empty_flag = True
+                break
+        if non_empty_flag:
+            break
+
+    diff_flag = False
+    parser_num = len(fuzz_targets)
+    for i in range(parser_num):
+        for j in range(i + 1, parser_num):
+            if two_parser_cmp(fuzz_targets[i], fuzz_targets[j], att_path) is False:
+                diff_flag = True
+
+    # at least one parser extracted non-empty attachment & differences exist among all parsers
+    if non_empty_flag and diff_flag:
+        return True
+    else:
+        return False
+
+
 def att_output_cmp(att_path):
     same_flag = True
     eml_name = os.path.basename(att_path)
     # subdirs = os.listdir(att_path)
-    # if set(subdirs) != set(cfg.parser_list):
+    # if set(subdirs) != set(fuzz_targets.keys()):
     #     diff_detected(parser_diff, eml_name, "Sub dirs not equal to parser list.")
     #     same_flag = False
 
-    parser_num = len(cfg.parser_list)
+    parser_num = len(fuzz_targets)
     for i in range(parser_num):
         for j in range(i + 1, parser_num):
-            if two_parser_cmp(cfg.parser_list[i], cfg.parser_list[j], att_path) is False:
+            if two_parser_cmp(fuzz_targets[i], fuzz_targets[j], att_path) is False:
                 same_flag = False
 
     if same_flag:
@@ -116,7 +142,7 @@ def att_output_cmp(att_path):
 
 def att_refer_cmp(att_path, att_list):
     same_flag = True
-    for parser in cfg.parser_list:
+    for parser in fuzz_targets:
         if parser_refer_cmp(parser, att_path, att_list) is False:
             same_flag = False
     return same_flag
@@ -125,10 +151,10 @@ def att_refer_cmp(att_path, att_list):
 def exist_valid_diff(att_path, seed):
     valid_diff_flag = False
     standard_num = {}
-    for i in range(len(cfg.parser_list)):
-        parser = cfg.parser_list[i]
+    for i in range(len(fuzz_targets)):
+        parser = fuzz_targets[i]
         standard_num[parser] = standard_cmp(os.path.join(att_path, parser))
-        if i >= 1 and (standard_num[cfg.parser_list[i]] != standard_num[cfg.parser_list[i - 1]]):
+        if i >= 1 and (standard_num[fuzz_targets[i]] != standard_num[fuzz_targets[i - 1]]):
             valid_diff_flag = True
     if valid_diff_flag:
         valid_diff[seed] = standard_num
