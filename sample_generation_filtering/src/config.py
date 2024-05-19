@@ -3,7 +3,6 @@ import os
 grammar_path = "../grammar/email_grammar.json"
 mutation_info_path = "../grammar/symbol_mutation_info.json"
 
-out_file = "1.txt"
 seed_file = "seed.txt"
 
 sample_dir = "../out/sample/"
@@ -22,7 +21,7 @@ standard_refer_path = "../misc/reference/eicar"
 sample_stage = "mutated"
 extract_source_path = sample_dir + sample_stage + "/"
 # extract_dest_path = os.path.join("../extracts/", "att_extract_from_" + sample_stage + "/")
-extract_dest_path = r"../extract"
+extract_dest_path = r"../out/extract"
 extract_err_path = os.path.join(extract_dest_path, "err.txt")
 
 parser_diff_path = os.path.join("../out/", sample_stage + "_parser_diff.txt")

@@ -13,14 +13,15 @@ import json
 import random
 
 
-def fuzzOneInput(sample, fuzz_targets):
+def fuzzOneInput(sample, fuzz_targets, sample_id):
     # for target in fuzz_targets:
     #     target(sample)
-    open(config.out_file, "wb").write(sample)
+    sample_path = path.join(config.mutated_dir, "sample_" + str(sample_id))
+    open(sample_path, "wb").write(sample)
 
     for target_name in fuzz_targets:
         target = fuzz_targets[target_name]
-        p = Popen(target["execute_str"].format(input_path=config.out_file, output_path=path.join(config.output_dir, target["name"])), cwd=target["cwd"], shell=True)
+        p = Popen(target["execute_str"].format(input_path=sample_path, output_path=path.join(config.extract_dest_path, target["name"])), cwd=target["cwd"], shell=True)
         p.wait()
 
     diff = valid_diff_among_parsers(config.extract_dest_path)
@@ -32,12 +33,12 @@ def load_mutations_operators(path):
         return json.load(fp)
 
 
-def generate_input(seed,count):
+def generate_input(seed, count):
     sample_generator = Generator(True, [], config.out_file, config.seed_file)
 
     for i in range(count):
         input = sample_generator.generate_input(seed)
-        yield input
+        yield input, i
     pass
 
 
@@ -69,18 +70,18 @@ def main():
     punishment_rate = 0.1
     op_scoreboard = {}
 
-    for sample in generate_input(seed, TOTAL):
+    for sample, sample_id in generate_input(seed, TOTAL):
         op_id = random_op_with_weights(mutations_operators)
 
         selector = mutations_operators[op_id][0]
         operator = mutations_operators[op_id][1]
 
         mutator = Mutator(verbose=True, _input=sample)
-        mutated_input:InputTree = mutator.mutate_input(selector, operator)
+        mutated_input: InputTree = mutator.mutate_input(selector, operator)
 
         data = mutated_input.tree_to_msg()
 
-        ok = fuzzOneInput(data, fuzz_targets)
+        ok = fuzzOneInput(data, fuzz_targets, sample_id)
 
         if ok:
             mutations_operators[op_id][3] += reward_rate

@@ -26,14 +26,6 @@ target_mailbox = {
     },
 }
 
-target_list = [
-    "gmail",
-    "icloud_mail",
-    "outlook",
-    "mail_com",
-    "qq_mail",
-]
-
 args_mode = True
 disp_lim = 0        # 0: don't display data  -1: display all data  >0: display first *disp_lim* lines of data
 interval = 12       # interval between sending continuous messages

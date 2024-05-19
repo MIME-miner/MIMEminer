@@ -18,7 +18,7 @@ test_cases = {
             b"--foo\r\n"
             b"Content-Type: text/plain\r\n"
             b"\r\n"
-            b"yonghejiunian suizaiguichou\r\n"
+            b"afcsebwilwevf wefqoplqkdncoie\r\n"
             b"--foo\r\n"
             b"Content-Type: application/octet-stream; name=att\r\n"
             b"Content-Disposition: attachment; filename=<FILENAME>\r\n"
