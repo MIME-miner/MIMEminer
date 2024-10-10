@@ -52,6 +52,12 @@ def two_parser_cmp(parser1, parser2, att_path):
     eml_name = os.path.basename(att_path)
     path1 = os.path.join(att_path, parser1['name'])
     path2 = os.path.join(att_path, parser2['name'])
+    if os.path.exists(path1) is False:
+        os.makedirs(path1)
+    if os.path.exists(path2) is False:
+        os.makedirs(path2)
+    path1= os.path.abspath(path1)
+    path2= os.path.abspath(path2)
 
     if remove_ext:
         file_dict1 = dict((os.path.splitext(f)[0], f) for f in os.listdir(path1))
