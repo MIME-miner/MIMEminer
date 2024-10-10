@@ -50,8 +50,8 @@ def two_parser_cmp(parser1, parser2, att_path):
     same_flag = True
     remove_ext = True
     eml_name = os.path.basename(att_path)
-    path1 = os.path.join(att_path, parser1)
-    path2 = os.path.join(att_path, parser2)
+    path1 = os.path.join(att_path, parser1['name'])
+    path2 = os.path.join(att_path, parser2['name'])
 
     if remove_ext:
         file_dict1 = dict((os.path.splitext(f)[0], f) for f in os.listdir(path1))
@@ -99,9 +99,10 @@ def two_parser_cmp(parser1, parser2, att_path):
 def valid_diff_among_parsers(att_path):
     non_empty_flag = False   # set as True if at least one parser extracted non-empty attachment
     for parser in fuzz_targets:
-        extracted_att_list = os.listdir(os.path.join(att_path, parser))
+        #print(att_path, parser) 
+        extracted_att_list = os.listdir(os.path.join(os.path.expanduser(att_path), parser))
         for att in extracted_att_list:
-            if os.path.getsize(os.path.join(att_path, parser, att)) != 0:
+            if os.path.getsize(os.path.join(os.path.expanduser(att_path), parser, att)) != 0:
                 non_empty_flag = True
                 break
         if non_empty_flag:
@@ -109,9 +110,12 @@ def valid_diff_among_parsers(att_path):
 
     diff_flag = False
     parser_num = len(fuzz_targets)
+    keys = list(fuzz_targets.keys())
     for i in range(parser_num):
         for j in range(i + 1, parser_num):
-            if two_parser_cmp(fuzz_targets[i], fuzz_targets[j], att_path) is False:
+            key_i = keys[i]
+            key_j = keys[j]
+            if two_parser_cmp(fuzz_targets[key_i], fuzz_targets[key_j], att_path) is False:
                 diff_flag = True
 
     # at least one parser extracted non-empty attachment & differences exist among all parsers

@@ -7,7 +7,7 @@ fuzz_targets = {
     "apache-common-parser": {
         "name": "apache-common-parser",
         "cwd": "../parsers/java/apache-common-parser/target",
-        "execute_str": "java -jar apache-common-parser-1.0-SNAPSHOT.jar -i {input_path} -o {output_path}",
+        "execute_str": "java -jar MimeKit-parser-1.0-SNAPSHOT.jar -i {input_path} -o {output_path}",
     },
     "mailparser-parser": {
         "name": "mailparser-parser",

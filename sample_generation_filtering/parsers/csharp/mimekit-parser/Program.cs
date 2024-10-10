@@ -7,8 +7,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        string inputFilePath = null;
-        string outputDirectory = null;
+        string? inputFilePath = null;
+        string? outputDirectory = null;
 
         // 解析命令行参数
         for (int i = 0; i < args.Length; i++)

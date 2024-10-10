@@ -18,21 +18,20 @@ class Mutator:
     def mutate_input(self,selector,operator):
         try:
             node_to_mutate_pool = []
-
             for node in self.input.nonterminal_node_list.values():
                 if node.symbol == selector:
                     node_to_mutate_pool.append(node)
 
 
             node_to_mutate = random.choice(node_to_mutate_pool)
-
             self.__getattribute__(operator)(node_to_mutate, self.verbose)
 
             return self.input
 
         except Exception as exception:
-            _print_exception("")
-            raise exception
+            _print_exception("Error in mutate_input: ")
+            return None
+            #raise exception
 
     def remove_random_character(self, node, verbose=False):
         """Remove a character at a random position"""

@@ -15,9 +15,15 @@ def extract_attachments(email_file, output_dir):
                 os.makedirs(output_dir)
             print('Content-Type: {} Body: {}'.format(part, part.body))
             filename = part.detected_file_name
-            with open(os.path.join(output_dir, filename), 'w') as f:
-               f.write(part.body)
-               print(f'Saved attachment: {filename}')
+            if isinstance(part.body, bytes):
+                with open(os.path.join(output_dir, filename), 'wb') as f:
+                    f.write(part.body)
+            elif isinstance(part.body, str):
+                with open(os.path.join(output_dir, filename), 'w') as f:
+                    f.write(part.body)
+            else:
+                print(f"不支持的类型: {type(part.body)}，文件名: {part.filename}")
+            print(f'Saved attachment: {filename}')
 
 
 

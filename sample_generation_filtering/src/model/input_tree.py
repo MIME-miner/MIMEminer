@@ -25,7 +25,7 @@ class InputTree:
         self.root = Node('<start>', None)
         self.grammar = grammar
         self.seed = seed
-        random.seed(seed)
+        #random.seed(seed)
         self.verbose = verbose
 
         self.max_nesting_depth = 2

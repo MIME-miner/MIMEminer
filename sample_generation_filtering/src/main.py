@@ -6,6 +6,7 @@ import config
 from random import randint
 from copy import deepcopy
 from os import path
+import os
 from subprocess import Popen
 from diff_detect import valid_diff_among_parsers
 from targets_config import fuzz_targets
@@ -16,12 +17,14 @@ import random
 def fuzzOneInput(sample, fuzz_targets, sample_id):
     # for target in fuzz_targets:
     #     target(sample)
-    sample_path = path.join(config.mutated_dir, "sample_" + str(sample_id))
+    sample_path = path.join(os.path.abspath(config.mutated_dir), "sample_" + str(sample_id))
+    if not path.exists(path.dirname(sample_path)):
+        os.makedirs(path.dirname(sample_path))
     open(sample_path, "wb").write(sample)
 
     for target_name in fuzz_targets:
         target = fuzz_targets[target_name]
-        p = Popen(target["execute_str"].format(input_path=sample_path, output_path=path.join(config.extract_dest_path, target["name"])), cwd=target["cwd"], shell=True)
+        p = Popen(target["execute_str"].format(input_path=sample_path, output_path=path.join(os.path.abspath(config.extract_dest_path), target["name"])), cwd=target["cwd"], shell=True)
         p.wait()
 
     diff = valid_diff_among_parsers(config.extract_dest_path)
@@ -43,7 +46,7 @@ def generate_input(seed, count):
 
 
 def save_file(path, sample):
-    with open(path, "w") as fp:
+    with open(path, "wb") as fp:
         fp.write(sample.tree_to_msg(sample))
 
 
@@ -54,7 +57,6 @@ def random_op_with_weights(possible_ops):
         probabilities[index] = float(priority)
 
     probabilities = [(1 - sum(probabilities)) / probabilities.count(0) if elem == 0 else elem for elem in probabilities]
-
     op_id = random.choices(op_ids, weights=probabilities)[0]
 
     return op_id
@@ -62,7 +64,7 @@ def random_op_with_weights(possible_ops):
 
 def main():
     # seed_l, seed_r = 0, 20
-    seed = randint
+    seed = randint(0, 20)
     TOTAL = 5000
     PUNISH_THRESHOLD = 10
     mutations_operators = load_mutations_operators(config.mutations_ops_path)
@@ -72,19 +74,17 @@ def main():
 
     for sample, sample_id in generate_input(seed, TOTAL):
         op_id = random_op_with_weights(mutations_operators)
-
         selector = mutations_operators[op_id][0]
         operator = mutations_operators[op_id][1]
-
         mutator = Mutator(verbose=True, _input=sample)
         mutated_input: InputTree = mutator.mutate_input(selector, operator)
-
+        if mutated_input is None:
+            continue
         data = mutated_input.tree_to_msg()
-
         ok = fuzzOneInput(data, fuzz_targets, sample_id)
 
         if ok:
-            mutations_operators[op_id][3] += reward_rate
+            mutations_operators[op_id][2] += reward_rate
             save_file(config.filtered_result_path, sample)
         else:
             key = selector + operator
@@ -93,7 +93,7 @@ def main():
             else:
                 op_scoreboard[key] += 1
             if op_scoreboard[key] > PUNISH_THRESHOLD:
-                mutations_operators[op_id][3] -= punishment_rate
+                mutations_operators[op_id][2] -= punishment_rate
 
     json.dump(op_scoreboard, open(config.mutations_ops_path, "w"), indent=2)
 
